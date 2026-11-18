@@ -101,6 +101,8 @@ html, body {
 #search-input {
     flex: 1;
     min-width: 120px;
+    line-height: 1.5;
+    min-height: calc(10lh + 16px + 2px);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 8px 10px;
