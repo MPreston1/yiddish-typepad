@@ -1,6 +1,6 @@
 {
-  "name": "Yiddish Dictionary Search",
-  "short_name": "Yiddish Dict",
+  "name": "Yiddish Typepad",
+  "short_name": "Yiddish Typepad",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

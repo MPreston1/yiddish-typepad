@@ -6,7 +6,7 @@
 // deploy therefore shows up the next time the app is opened after it has
 // been loaded once; no version numbers to bump.
 // Requests to other sites (dictionary sources, CORS proxies) are never touched.
-const CACHE = 'yiddish-dictionary';
+const CACHE = 'yiddish-typepad';
 const SHELL = ['./', 'style.css', 'app.js'];
 
 let refreshing = null;
