@@ -45,7 +45,7 @@ html, body {
 }
 
 #topbar h1 {
-    font-size: 17px;
+    font-size: 21px;
     font-weight: 700;
     margin-bottom: 8px;
     color: var(--text);
@@ -61,7 +61,7 @@ html, body {
     border: none;
     border-radius: 8px;
     padding: 7px 12px;
-    font-size: 13px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
@@ -106,7 +106,7 @@ html, body {
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 8px 10px;
-    font-size: 15px;
+    font-size: 19px;
     background: var(--card);
     color: var(--text);
     outline: none;
@@ -126,7 +126,7 @@ html, body {
     flex-shrink: 0;
     min-width: 38px;
     padding: 7px 10px;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.1;
 }
 
@@ -153,7 +153,7 @@ html, body {
 .message {
     color: var(--muted);
     font-style: italic;
-    font-size: 14px;
+    font-size: 18px;
     padding: 20px 0;
     text-align: center;
 }
