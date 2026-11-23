@@ -39,7 +39,7 @@ const YK_MAP = {
     Semicolon: [';', ':', '…']
 };
 
-let yiddishOn = true; // default is on
+let yiddishOn = false;
 try {
     yiddishOn = localStorage.getItem('yiddishTyping') === '1';
 } catch (e) {
