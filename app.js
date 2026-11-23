@@ -40,10 +40,10 @@ const YK_MAP = {
 };
 
 let yiddishOn = true;
-try {
+/*try {
     yiddishOn = localStorage.getItem('yiddishTyping') === '1';
 } catch (e) {
-}
+} */ // got rid of feature to read previous setting.  Want to default to on
 let yidLastWasTilde = false;
 
 function updateYiddishUI() {
