@@ -39,7 +39,7 @@ const YK_MAP = {
     Semicolon: [';', ':', '…']
 };
 
-let yiddishOn = false;
+let yiddishOn = true;
 try {
     yiddishOn = localStorage.getItem('yiddishTyping') === '1';
 } catch (e) {
@@ -51,7 +51,7 @@ function updateYiddishUI() {
     btn.textContent = yiddishOn ? 'א' : 'A';
     btn.classList.toggle('on', yiddishOn);
     btn.setAttribute('aria-pressed', yiddishOn ? 'true' : 'false');
-    ['search-input', 'find-input'].forEach(id =>
+    ['search-input'].forEach(id =>
         document.getElementById(id).classList.toggle('yid-on', yiddishOn));
 }
 
@@ -110,7 +110,7 @@ function yiddishKeydown(e) {
     insertAtCursor(e.target, out);
 }
 
-['search-input', 'find-input'].forEach(id =>
+['search-input'].forEach(id =>
     document.getElementById(id).addEventListener('keydown', yiddishKeydown));
 
 const yidBtn = document.getElementById('yid-toggle');
