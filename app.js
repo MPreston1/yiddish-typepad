@@ -88,7 +88,7 @@ const HE_MAP = {
     Digit9: ['9', ')', 'ֶ', 'ֶ']
 };
 
-let yiddishOn = false;
+let yiddishOn = true;
 /*try {
     yiddishOn = localStorage.getItem('yiddishTyping') === '1';
 } catch (e) {
