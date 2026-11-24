@@ -39,16 +39,65 @@ const YK_MAP = {
     Semicolon: [';', ':', '…']
 };
 
-let yiddishOn = true;
+// ── Hebrew typing mode (MacOS Hebrew layout) ─────────────────────────────────
+// Maps physical keys (event.code) to the MacOS Hebrew layout:
+// [plain, shift, option, shift+option]. Keys not listed here type normally.
+const HE_MAP = {
+    KeyA: ['ש', 'שׁ', 'שׂ', 'שׂ'],
+    KeyS: ['ד', '', '‎', ''],
+    KeyD: ['ג', '„', '‏', ''],
+    KeyF: ['כ', '', '€', '€'],
+    KeyG: ['ע', '', '֞', ''],
+    KeyH: ['י', '', 'ײַ', 'ײַ'],
+    KeyJ: ['ח', '', '”', ''],
+    KeyK: ['ל', 'לֹ', '֜', ''],
+    KeyL: ['ך', '', '’', ''],
+    KeyQ: ['/', '', '…', '…'],
+    KeyW: ['׳', '', 'ָ', 'ָ'],
+    KeyE: ['ק', '', '', ''],
+    KeyR: ['ר', '', '', ''],
+    KeyT: ['א', '', '', ''],
+    KeyY: ['ט', '', '', ''],
+    KeyU: ['ו', 'וֹ', 'וּ', 'וּ'],
+    KeyI: ['ן', '', '', ''],
+    KeyO: ['ם', '', '', ''],
+    KeyP: ['פ', '', '', ''],
+    KeyZ: ['ז', '', '–', '–'],
+    KeyX: ['ס', '', '—', ''],
+    KeyC: ['ב', 'לֹ', '“', ''],
+    KeyV: ['ה', '', '”', '”'],
+    KeyB: ['נ', '', '‘', '֜'],
+    KeyN: ['מ', '', '’', ''],
+    KeyM: ['צ', '', 'שׁ', 'שׁ'],
+    Minus: ['-', '_', '-', '-'],
+    Equal: ['=', '+', 'ֹ', 'ֹ'],
+    BracketLeft: [']', '}', '', ''],
+    BracketRight: ['[', '{', '', ''],
+    Backslash: ['ֿ', '|', '־', ''],
+    Quote: [",", '״', 'ֲ', 'ֲ'],
+    Semicolon: ['ף', ':', ';', ';'],
+    Digit0: ['0', '(', 'ְ', 'ְ'],
+    Digit1: ['1', '!', 'ֲ', ''],
+    Digit2: ['2', '@', 'ֳ', 'ֳ'],
+    Digit3: ['3', '#', 'ֱ', 'ֱ'],
+    Digit4: ['4', '$', 'ִ', 'ִ'],
+    Digit5: ['5', '%', 'ֵ', 'ֵ'],
+    Digit6: ['ף', ':', ';', ';'],
+    Digit7: ['7', '₪', 'ָ', 'ָ'],
+    Digit8: ['8', '*', 'ֻ', 'ֻ']ת
+    Digit9: ['9', ')', 'ֶ', 'ֶ']
+};
+
+let yiddishOn = false;
 /*try {
     yiddishOn = localStorage.getItem('yiddishTyping') === '1';
 } catch (e) {
-} */ // got rid of feature to read previous setting.  Want to default to on
+} */ // got rid of feature to read previous setting.  Want to default to as it is set in the website
 let yidLastWasTilde = false;
 
-function updateYiddishUI() {
-    const btn = document.getElementById('yid-toggle');
-    btn.textContent = yiddishOn ? 'א' : 'A';
+function updateLangUI() {
+    const btn = document.getElementById('lang-toggle');
+    btn.textContent = yiddishOn ? 'Y' : 'H';
     btn.classList.toggle('on', yiddishOn);
     btn.setAttribute('aria-pressed', yiddishOn ? 'true' : 'false');
     ['search-input'].forEach(id =>
@@ -61,7 +110,7 @@ function setYiddish(on) {
         localStorage.setItem('yiddishTyping', on ? '1' : '0');
     } catch (e) {
     }
-    updateYiddishUI();
+    updateLangUI();
 }
 
 function insertAtCursor(el, text) {
@@ -78,7 +127,7 @@ function insertAtCursor(el, text) {
     }
 }
 
-function yiddishKeydown(e) {
+function langKeydown(e) {
     if (e.isComposing || e.ctrlKey || e.metaKey) return;
 
     // "~" toggles the mode; "~~" types a literal "~" and leaves the mode unchanged.
@@ -100,23 +149,33 @@ function yiddishKeydown(e) {
     yidLastWasTilde = false;
 
     // Caps Lock types plain Latin, as in the Mac layout.
-    if (!yiddishOn || e.getModifierState('CapsLock')) return;
+    //if (!yiddishOn || e.getModifierState('CapsLock')) return;
+    if (e.getModifierState('CapsLock')) return;
 
-    const m = YK_MAP[e.code];
-    if (!m) return;
-    const out = e.altKey ? (e.shiftKey ? m[3] : m[2]) : (e.shiftKey ? m[1] : m[0]);
-    if (!out) return;
-    e.preventDefault();
-    insertAtCursor(e.target, out);
+    if (yiddishOn) {
+        const m = YK_MAP[e.code];
+        if (!m) return;
+        const out = e.altKey ? (e.shiftKey ? m[3] : m[2]) : (e.shiftKey ? m[1] : m[0]);
+        if (!out) return;
+        e.preventDefault();
+        insertAtCursor(e.target, out);
+    } else {
+        const m = HE_MAP[e.code];
+        if (!m) return;
+        const out = e.altKey ? (e.shiftKey ? m[3] : m[2]) : (e.shiftKey ? m[1] : m[0]);
+        if (!out) return;
+        e.preventDefault();
+        insertAtCursor(e.target, out);
+    }
 }
 
 ['search-input'].forEach(id =>
-    document.getElementById(id).addEventListener('keydown', yiddishKeydown));
+    document.getElementById(id).addEventListener('keydown', langKeydown));
 
-const yidBtn = document.getElementById('yid-toggle');
+const yidBtn = document.getElementById('lang-toggle');
 yidBtn.addEventListener('mousedown', e => e.preventDefault()); // keep focus in the box
 yidBtn.addEventListener('click', () => {
     setYiddish(!yiddishOn);
     document.getElementById('search-input').focus();
 });
-updateYiddishUI();
+updateLangUI();
