@@ -92,10 +92,6 @@ const HE_MAP = {
 };
 
 let yiddishOn = true;
-/*try {
-    yiddishOn = localStorage.getItem('yiddishTyping') === '1';
-} catch (e) {
-} */ // got rid of feature to read previous setting.  Want to default to as it is set in the website
 let yidLastWasTilde = false;
 
 function updateLangUI() {
@@ -103,16 +99,12 @@ function updateLangUI() {
     btn.textContent = yiddishOn ? 'Y' : 'H';
     btn.classList.toggle('on', yiddishOn);
     btn.setAttribute('aria-pressed', yiddishOn ? 'true' : 'false');
-    ['search-input'].forEach(id =>
-        document.getElementById(id).classList.toggle('yid-on', yiddishOn));
+    document.getElementById('search-input')
+        .classList.toggle('yid-on', yiddishOn));
 }
 
 function setYiddish(on) {
     yiddishOn = on;
-    try {
-        localStorage.setItem('yiddishTyping', on ? '1' : '0');
-    } catch (e) {
-    }
     updateLangUI();
 }
 
@@ -155,25 +147,18 @@ function langKeydown(e) {
     //if (!yiddishOn || e.getModifierState('CapsLock')) return;
     if (e.getModifierState('CapsLock')) return;
 
-    if (yiddishOn) {
-        const m = YK_MAP[e.code];
-        if (!m) return;
-        const out = e.altKey ? (e.shiftKey ? m[3] : m[2]) : (e.shiftKey ? m[1] : m[0]);
-        if (!out) return;
-        e.preventDefault();
-        insertAtCursor(e.target, out);
-    } else {
-        const m = HE_MAP[e.code];
-        if (!m) return;
-        const out = e.altKey ? (e.shiftKey ? m[3] : m[2]) : (e.shiftKey ? m[1] : m[0]);
-        if (!out) return;
-        e.preventDefault();
-        insertAtCursor(e.target, out);
-    }
+    const m = (yiddishOn ? YK_MAP : HE_MAP)[e.code];
+    if (!m) return;
+
+    const out = e.altKey ? (e.shiftKey ? m[3] : m[2]) : (e.shiftKey ? m[1] : m[0]);
+    if (!out) return;
+
+    e.preventDefault();
+    insertAtCursor(e.target, out);
 }
 
-['search-input'].forEach(id =>
-    document.getElementById(id).addEventListener('keydown', langKeydown));
+document.getElementById('search-input')
+    .addEventListener('keydown', langKeydown));
 
 const yidBtn = document.getElementById('lang-toggle');
 yidBtn.addEventListener('mousedown', e => e.preventDefault()); // keep focus in the box
